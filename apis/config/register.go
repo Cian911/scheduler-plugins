@@ -23,7 +23,10 @@ import (
 )
 
 // SchemeGroupVersion is group version used to register these objects
-var SchemeGroupVersion = schema.GroupVersion{Group: schedconfig.GroupName, Version: runtime.APIVersionInternal}
+var SchemeGroupVersion = schema.GroupVersion{
+	Group:   schedconfig.GroupName,
+	Version: runtime.APIVersionInternal,
+}
 
 var (
 	localSchemeBuilder = &schedconfig.SchemeBuilder
@@ -44,6 +47,7 @@ func addKnownTypes(scheme *runtime.Scheme) error {
 		&TopologicalSortArgs{},
 		&NetworkOverheadArgs{},
 		&SySchedArgs{},
+		&NetworkTrafficArgs{},
 	)
 	return nil
 }

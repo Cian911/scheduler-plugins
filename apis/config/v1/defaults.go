@@ -189,7 +189,9 @@ func SetDefaults_NodeResourceTopologyMatchArgs(obj *NodeResourceTopologyMatchArg
 
 	if len(obj.ScoringStrategy.Resources) == 0 {
 		// If no resources specified, use the default set.
-		obj.ScoringStrategy.Resources = append(obj.ScoringStrategy.Resources, defaultResourceSpec...)
+		obj.ScoringStrategy.Resources = append(
+			obj.ScoringStrategy.Resources,
+			defaultResourceSpec...)
 	}
 
 	for i := range obj.ScoringStrategy.Resources {
@@ -203,7 +205,6 @@ func SetDefaults_NodeResourceTopologyMatchArgs(obj *NodeResourceTopologyMatchArg
 	}
 	if obj.Cache.ForeignPodsDetect == nil {
 		obj.Cache.ForeignPodsDetect = &defaultForeignPodsDetect
-
 	}
 	if obj.Cache.ResyncMethod == nil {
 		obj.Cache.ResyncMethod = &defaultResyncMethod
@@ -215,7 +216,9 @@ func SetDefaults_NodeResourceTopologyMatchArgs(obj *NodeResourceTopologyMatchArg
 
 // SetDefaults_PreemptionTolerationArgs reuses SetDefaults_DefaultPreemptionArgs
 func SetDefaults_PreemptionTolerationArgs(obj *PreemptionTolerationArgs) {
-	k8sschedulerconfigv1.SetDefaults_DefaultPreemptionArgs((*schedulerconfigv1.DefaultPreemptionArgs)(obj))
+	k8sschedulerconfigv1.SetDefaults_DefaultPreemptionArgs(
+		(*schedulerconfigv1.DefaultPreemptionArgs)(obj),
+	)
 }
 
 // SetDefaults_TopologicalSortArgs sets the default parameters for TopologicalSortArgs plugin.
@@ -248,5 +251,17 @@ func SetDefaults_SySchedArgs(obj *SySchedArgs) {
 
 	if obj.DefaultProfileName == nil {
 		obj.DefaultProfileName = &DefaultSySchedProfileName
+	}
+}
+
+func SetDefaults_NetworkTrafficArgs(obj *NetworkTrafficArgs) {
+	if obj.TimeRangeInMinutes == nil {
+		defaultTime := int64(5)
+		obj.TimeRangeInMinutes = &defaultTime
+	}
+
+	if obj.NetworkInterface == nil || *obj.NetworkInterface == "" {
+		networkInterface := "ens192"
+		obj.NetworkInterface = &networkInterface
 	}
 }

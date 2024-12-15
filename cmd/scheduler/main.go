@@ -24,10 +24,12 @@ import (
 	_ "k8s.io/component-base/metrics/prometheus/version"  // for version metric registration
 	"k8s.io/kubernetes/cmd/kube-scheduler/app"
 
+	_ "sigs.k8s.io/scheduler-plugins/apis/config/scheme"
 	"sigs.k8s.io/scheduler-plugins/pkg/capacityscheduling"
 	"sigs.k8s.io/scheduler-plugins/pkg/coscheduling"
 	"sigs.k8s.io/scheduler-plugins/pkg/networkaware/networkoverhead"
 	"sigs.k8s.io/scheduler-plugins/pkg/networkaware/topologicalsort"
+	"sigs.k8s.io/scheduler-plugins/pkg/networktraffic"
 	"sigs.k8s.io/scheduler-plugins/pkg/noderesources"
 	"sigs.k8s.io/scheduler-plugins/pkg/noderesourcetopology"
 	"sigs.k8s.io/scheduler-plugins/pkg/podstate"
@@ -37,9 +39,6 @@ import (
 	"sigs.k8s.io/scheduler-plugins/pkg/trimaran/loadvariationriskbalancing"
 	"sigs.k8s.io/scheduler-plugins/pkg/trimaran/lowriskovercommitment"
 	"sigs.k8s.io/scheduler-plugins/pkg/trimaran/targetloadpacking"
-
-	// Ensure scheme package is initialized.
-	_ "sigs.k8s.io/scheduler-plugins/apis/config/scheme"
 )
 
 func main() {
@@ -62,6 +61,7 @@ func main() {
 		// app.WithPlugin(crossnodepreemption.Name, crossnodepreemption.New),
 		app.WithPlugin(podstate.Name, podstate.New),
 		app.WithPlugin(qos.Name, qos.New),
+		app.WithPlugin(networktraffic.PluginName, networktraffic.New),
 	)
 
 	code := cli.Run(command)

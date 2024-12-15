@@ -279,3 +279,16 @@ type SySchedArgs struct {
 	// CR name of the default profile for all system calls
 	DefaultProfileName string
 }
+
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+
+type NetworkTrafficArgs struct {
+	metav1.TypeMeta
+
+	// Address of prometheus server
+	Address string
+	// NetworkInterface to be monitored, assume the nodes OS is homogeneous
+	NetworkInterface string
+	// TimeRangeInMinutes used to aggregate the network metrics
+	TimeRangeInMinutes int64
+}
